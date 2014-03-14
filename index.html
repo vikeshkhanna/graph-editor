@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Graph Editor</title>
+		<link rel="stylesheet" href="app.css">
+		<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+		<script src="http://d3js.org/d3.v3.min.js"></script>
+		<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+		<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+		<script type="text/javascript">
+			$(document).ready(function(){
+					$("#download").click(function(){
+						adj_list = ""
+						for(var i=0; i<links.length; i++){
+								adj_list += links[i].source.id + " " + links[i].target.id + "\n";
+								}
+
+						 var pom = document.createElement('a');
+						 pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(adj_list));
+						 pom.setAttribute('download', "adj.txt");
+						 pom.click();
+						});
+					});
+		</script>
+  </head>
+  
+	<body>
+		<div class="container bs-docs-container">
+			<div class="radio-inline">
+				<label>
+					<input type="radio" name="options" id="options_directed" value="directed" checked>
+					Directed Graph
+				</label>
+			</div>
+			<div class="radio-inline">
+				<label>
+					<input type="radio" name="options" id="options_undirected" value="undirected">
+					Undirected Graph
+				</label>
+			</div>
+		
+			<div style="display:block">
+				<button class="btn btn-primary" id="download">Download Adjacency List</button>
+			</div>
+		</div>
+	</body>
+
+	<script src="app.js"></script>
+</html>
