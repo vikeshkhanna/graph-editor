@@ -9,6 +9,7 @@
 		<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 		<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 		<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+		<script src="app.js"></script>
 
 		<script type="text/javascript">
 			$(document).ready(function(){
@@ -22,12 +23,16 @@
 						 pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(adj_list));
 						 pom.setAttribute('download', "adj.txt");
 						 pom.click();
-						});
+						 });
+
+						var editor = new Editor({"container":"#editor-container"});
 					});
+				
 		</script>
   </head>
   
 	<body>
+		<div id="editor-container"></div>
 		<div class="container bs-docs-container">
 			<div class="radio-inline">
 				<label>
@@ -48,5 +53,4 @@
 		</div>
 	</body>
 
-	<script src="app.js"></script>
 </html>
