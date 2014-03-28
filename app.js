@@ -124,15 +124,15 @@ Editor.prototype.restart = function(){
 
   // update existing links
   this.path.classed('selected', (function(d) { return d === this.selected_link; }).bind(this))
-    .style('marker-start', function(d) { return d.left ? 'url(#start-arrow)' : ''; })
-    .style('marker-end', function(d) { return d.right ? 'url(#end-arrow)' : ''; });
+    .style('marker-start', (function(d) { return d.left && !this.undirected ? 'url(#start-arrow)' : ''; }).bind(this))
+    .style('marker-end', (function(d) { return d.right && !this.undirected ? 'url(#end-arrow)' : ''; }).bind(this));
 
   // add new links
   this.path.enter().append('svg:path')
     .attr('class', 'link')
     .classed('selected', (function(d) { return d === this.selected_link; }).bind(this))
-    .style('marker-start', function(d) { return d.left ? 'url(#start-arrow)' : ''; })
-    .style('marker-end', function(d) { return d.right ? 'url(#end-arrow)' : ''; })
+    .style('marker-start', (function(d) { return d.left && !this.undirected ? 'url(#start-arrow)' : ''; }).bind(this))
+    .style('marker-end', (function(d) { return d.right && !this.undirected ? 'url(#end-arrow)' : ''; }).bind(this))
     .on('mousedown', (function(d) {
       if(d3.event.ctrlKey) return;
 

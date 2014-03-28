@@ -12,6 +12,8 @@
 		<script src="app.js"></script>
 
 		<script type="text/javascript">
+			var editor;
+
 			$(document).ready(function(){
 					$("#download").click(function(){
 						adj_list = ""
@@ -25,9 +27,15 @@
 						 pom.click();
 						 });
 
-						var editor = new Editor({"container":"#editor-container"});
+						editor = new Editor({"container":"#editor-container"});
+
+						$(".graph-type").change(function(event){
+							editor.undirected = event.target.value === "undirected" ? true : false;
+							editor.restart();
+						});
 					});
-				
+		
+
 		</script>
   </head>
   
@@ -36,14 +44,14 @@
 		<div class="container bs-docs-container">
 			<div class="radio-inline">
 				<label>
-					<input type="radio" name="options" id="options_directed" value="directed" checked>
-					Directed Graph
+					<input type="radio" name="options" id="options_directed" class="graph-type" value="directed" checked>
+						Directed Graph
 				</label>
 			</div>
 			<div class="radio-inline">
 				<label>
-					<input type="radio" name="options" id="options_undirected" value="undirected">
-					Undirected Graph
+					<input type="radio" name="options" id="options_undirected" class="graph-type" value="undirected">
+						Undirected Graph
 				</label>
 			</div>
 		
