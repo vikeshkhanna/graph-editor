@@ -270,7 +270,6 @@ Editor.prototype.mousedown = function() {
   node.x = point[0];
   node.y = point[1];
   this.nodes.push(node);
-
   this.restart();
 }
 
