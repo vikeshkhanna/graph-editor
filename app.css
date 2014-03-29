@@ -1,4 +1,4 @@
-.svg {
+svg {
   background-color: #FFF;
   cursor: default;
   -webkit-user-select: none;
@@ -61,11 +61,6 @@ text.id {
 	height:100%;
 }
 
-.editor g
-{
-	-webkit-user-select: none; 
-}
-
 #editor-container
 {
 	width:100%;
@@ -74,3 +69,59 @@ text.id {
 	margin-bottom:20px;
 }
 
+/* Callout styling */
+div.callout 
+{
+	height:60px;
+	width:100px;
+	float:left;
+	background-color: #444;
+	background-image: -moz-linear-gradient(top, #444, #444);
+	position: relative;
+	color: #ccc;
+	padding: 10px;
+	border-radius: 3px;
+	box-shadow: 0px 0px 20px #999;
+	margin: 25px;
+	min-height: 50px;
+	border: 1px solid #333;
+	text-shadow: 0 0 1px #000;
+}
+
+.callout::before {
+	content: "";
+	width: 0px;
+	height: 0px;
+	border: 0.8em solid transparent;
+	position: absolute;
+}
+
+.callout.right::before {
+	left: -20px;
+	top: 40%;
+	border-right: 10px solid #444;
+}
+
+.ui-dialog
+{
+	moz-box-shadow: 0 0 90px 5px #000;
+	-webkit-box-shadow: 0 0 40px 0px #000;
+}
+
+.ui-widget-overlay
+{
+	background:#111;
+	opacity:0.6;
+}
+
+.ui-dialog-titlebar
+{
+	font-family:Arial;
+	font-size:14px;
+}
+
+.ui-widget-header
+{
+	background:#eee;
+	border:none;
+}

@@ -60,7 +60,7 @@ Editor.prototype.init = function(){
 			.attr('orient', 'auto')
 		.append('svg:path')
 			.attr('d', 'M10,-5L0,0L10,5')
-			.attr('fill', '#000');
+			.attr('fill', '#000')
 
 	// line displayed when dragging new nodes
 	this.drag_line = this.svg.append('svg:path')
@@ -277,7 +277,7 @@ Editor.prototype.mousemove = function() {
   if(!this.mousedown_node) return;
 
   // update drag line
-  this.drag_line.attr('d', 'M' + this.mousedown_node.x + ',' + this.mousedown_node.y + 'L' + d3.event.pageX + ',' + d3.event.pageY);
+  this.drag_line.attr('d', 'M' + this.mousedown_node.x + ',' + this.mousedown_node.y + 'L' + d3.mouse(this.svg[0][0])[0] + ',' + d3.mouse(this.svg[0][0])[1]);
   this.restart();
 }
 
@@ -308,7 +308,7 @@ Editor.prototype.spliceLinksForNode = function(node) {
 // only respond once per keydown
 
 Editor.prototype.keydown = function() {
-  d3.event.preventDefault();
+  // d3.event.preventDefault();
 
   if(this.lastKeyDown !== -1) return;
   this.lastKeyDown = d3.event.keyCode;
