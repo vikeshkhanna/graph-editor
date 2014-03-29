@@ -101,15 +101,19 @@ Editor.prototype.resetMouseVars = function() {
 }
 
 Editor.prototype.tick = function(){
+
 		// draw directed edges with proper padding from node centers
 		this.path.attr('d', function(d) {
+			var sourcePadding = getPadding(d.source);
+			var targetPadding = getPadding(d.target);
+
 			var deltaX = d.target.x - d.source.x,
 					deltaY = d.target.y - d.source.y,
 					dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY),
 					normX = deltaX / dist,
 					normY = deltaY / dist,
-					sourcePadding = d.left ? 17 : 12,
-					targetPadding = d.right ? 17 : 12,
+					sourcePadding = d.left ? sourcePadding[0] : sourcePadding[1],
+					targetPadding = d.right ? targetPadding[0] : targetPadding[1],
 					sourceX = d.source.x + (sourcePadding * normX),
 					sourceY = d.source.y + (sourcePadding * normY),
 					targetX = d.target.x - (targetPadding * normX),
@@ -120,6 +124,16 @@ Editor.prototype.tick = function(){
 		this.circle.attr('transform', function(d) {
 			return 'translate(' + d.x + ',' + d.y + ')';
 		});
+}
+
+function getRadius(node)
+{
+	return 14+node.id.length*3;
+}
+
+function getPadding(node)
+{
+	return [17+node.id.length*3, 12+node.id.length*3];
 }
 
 // update graph (called when needed)
@@ -159,11 +173,12 @@ Editor.prototype.restart = function(){
   // update existing nodes (reflexive & selected visual states)
   this.circle.selectAll('circle')
     .style('fill', (function(d) { return (d === this.selected_node) ? d3.rgb(this.colors(d.id)).brighter().toString() : this.colors(d.id); }).bind(this))
-    .classed('reflexive', function(d) { return d.reflexive; });
+    .classed('reflexive', function(d) { return d.reflexive; })
+		.attr('r', function(d){ return getRadius(d);  });
 
+	// Update node IDs
 	this.circle.selectAll('text')
 		.text(function(d){ return d.id; });
-
 
   // add new nodes
   var g = this.circle.enter().append('svg:g');
