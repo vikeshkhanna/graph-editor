@@ -2,18 +2,23 @@ function Editor(options){
 	this.container = "body";
 	this.undirected = false;
 
+
 	if(options){
 		this.container = options["container"] ? options["container"] : this.container;
 		this.undirected = options["undirected"]===true;
+
+		if(options["dblnode"]){
+			this.dblnode = options["dblnode"];
+		}
 	}
 
 	this.width=500;
 	this.height=400;
 
 	this.nodes = [
-			{id: 0, reflexive: false},
-			{id: 1, reflexive: true },
-			{id: 2, reflexive: false}
+			{id: "0", reflexive: false, attrs:[]},
+			{id: "1", reflexive: true , attrs:[]},
+			{id: "2", reflexive: false, attrs:[1,2]}
 		],
 	this.lastNodeId = 2,
 	this.links = [
@@ -156,6 +161,10 @@ Editor.prototype.restart = function(){
     .style('fill', (function(d) { return (d === this.selected_node) ? d3.rgb(this.colors(d.id)).brighter().toString() : this.colors(d.id); }).bind(this))
     .classed('reflexive', function(d) { return d.reflexive; });
 
+	this.circle.selectAll('text')
+		.text(function(d){ return d.id; });
+
+
   // add new nodes
   var g = this.circle.enter().append('svg:g');
 
@@ -238,7 +247,10 @@ Editor.prototype.restart = function(){
       this.restart();
     }).bind(this))
 		.on('dblclick', (function(d) {
-
+			if(this.dblnode){
+				this.dblnode({"event":d3.event, "node":d});
+				this.restart();
+			}
 		}).bind(this));
 
   // show node IDs
@@ -266,11 +278,15 @@ Editor.prototype.mousedown = function() {
 
   // insert new node at point
   var point = d3.mouse(d3.event.target),
-      node = {id: ++this.lastNodeId, reflexive: false};
+      node = {id: (++this.lastNodeId).toString(), reflexive: false};
   node.x = point[0];
   node.y = point[1];
   this.nodes.push(node);
   this.restart();
+}
+
+Editor.prototype.getNodeIndex = function(id){
+	return this.nodes.map(function(e){ return e.id }).indexOf(id);
 }
 
 Editor.prototype.mousemove = function() {

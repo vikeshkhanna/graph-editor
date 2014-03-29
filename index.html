@@ -27,24 +27,70 @@
 							 pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(adj_list));
 							 pom.setAttribute('download', "adj.txt");
 							 pom.click();
-						 });
+					 });
 
-						editor = new Editor({"container":"#editor-container"});
+					function dblnode(data)
+					{
+						$("#node-attr-id").attr("value", data.node.id);
+						$("#node-attr-id").attr("placeholder", data.node.id);
+						$("#node-attr-attrs").attr("value", data.node.attrs);
+						$("#node-attr-group-error").hide();
+
+						$("#node-attr").dialog({
+								modal : true,
+								width: 200,
+								resizable:false,
+								title:"Node (ID: " + data.node.id + ")" ,
+								position: [data.event.pageX, data.event.pageY],
+								closeOnEscape:true,
+								hide : {effect : "fade", duration:100},
+								close: function(){
+									var index = editor.nodes.indexOf(data.node.id);
+								}
+							});
+
+							$(".ui-widget-overlay").click(function(){ $("#node-attr").dialog("close"); });
+							$("#btn-node-attr-cancel").click(function(){ 
+										$("#node-attr").dialog("close");
+									});
+
+							$("#btn-node-attr-save").unbind("click");
+							$("#btn-node-attr-save").click(function(){ 
+									var new_id = $("#node-attr-id").val();
+									var new_attrs = $("#node-attr-attrs").val().split(",");
+
+									if(editor.getNodeIndex(new_id)>=0 && new_id!=data.node.id){
+										$("#node-attr-group-error").show();
+										return;
+									}
+			
+									var index = editor.getNodeIndex(data.node.id);
+									editor.nodes[index].id = new_id;
+									editor.nodes[index].attrs = new_attrs;
+									editor.restart();
+									$("#node-attr").dialog("close");
+							});
+						}
+
+						editor = new Editor({
+							"container":"#editor-container",
+							"dblnode" : dblnode
+						});
 
 						$(".graph-type").change(function(event){
 							editor.undirected = event.target.value === "undirected" ? true : false;
 							editor.restart();
 						});
 
-						$("#attr-view").click(function(){
-							$("#node-attr").dialog({
+						$("#btn-attr-view").click(function(){
+							$("#attr-view").dialog({
 																			modal:true, 
 																			title:"Node Attributes View", 
 																			closeText:"close", 
 																			closeOnEscape:true,
 																			hide : {effect : "fade", duration:100}
-																		});
-							$(".ui-widget-overlay").click(function(){ $("#node-attr").dialog("close"); });
+																	});
+							$(".ui-widget-overlay").click(function(){ $("#attr-view").dialog("close"); });
 						});
 					});
 		
@@ -53,7 +99,27 @@
   </head>
   
 	<body>
-		<div id="node-attr"></div>
+		<div id="node-attr" style="display:none">
+			<form role="form" action="#">
+				<div class="form-group">
+					<label for="node-attr-id">Node ID:</label>
+					<input type="text" class="form-control" id="node-attr-id" placeholder="" />
+				</div>
+				<div class="form-group">
+					<label for="node-attr-attrs">Attributes:</label>
+					<textarea class="form-control" rows="3" id="node-attr-attrs"></textarea>
+				</div>
+				<div class="form-group">
+					<button class="btn btn-primary btn-sm editable-submit" id="btn-node-attr-save"><i class="glyphicon glyphicon-ok"></i></button>
+					<button type="button" class="btn btn-default btn-sm editable-cancel" id="btn-node-attr-cancel"><i class="glyphicon glyphicon-remove"></i></button>
+				</div>
+				<div class="form-group has-error" id="node-attr-group-error" style="display:none">
+					<label class="control-label" id="node-attr-error">Node ID must be unique</label>
+				</div>
+			</form>
+		</div>
+
+		<div id="attr-view"></div>
 		<div id="editor-container"></div>
 		<div class="container bs-docs-container">
 			<div class="radio-inline">
@@ -71,7 +137,7 @@
 		
 			<div style="display:block">
 				<button class="btn btn-primary" id="download">Download Adjacency List</button>
-				<button class="btn btn-primary" id="attr-view">Attribute view</button>
+				<button class="btn btn-primary" id="btn-attr-view">Attribute view</button>
 			</div>
 		</div>
 	</body>
