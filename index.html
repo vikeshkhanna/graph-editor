@@ -178,7 +178,7 @@
 	<body>
 		<!--Node-attr modal-->
 		<div id="node-attr" style="display:none">
-			<form role="form" action="#">
+			<form role="form">
 				<div class="form-group">
 					<label for="node-attr-id">Node ID:</label>
 					<input type="text" class="form-control" id="node-attr-id" placeholder="" />
@@ -224,23 +224,23 @@
 				<div class="col-md-6">
 					<form role="form">
 						<div class="radio-inline">
-								<label>
-									<input type="radio" name="options" id="options_directed" class="graph-type" value="directed" checked>
-										Directed Graph
-								</label>
-							</div>
-							<div class="radio-inline">
-								<label>
-									<input type="radio" name="options" id="options_undirected" class="graph-type" value="undirected">
-										Undirected Graph
-								</label>
-							</div>
-						</form>
-						<form class="form-inline">
-							<button class="btn btn-primary btn-danger form-control" id="btn-attr-view">Attribute view</button>
-							<button type="button" class="btn btn-default form-control" id="btn-expand">
-								<span class="glyphicon glyphicon-zoom-in"></span> Expand
-							</button>
+							<label>
+								<input type="radio" name="options" id="options_directed" class="graph-type" value="directed" checked>
+									Directed Graph
+							</label>
+						</div>
+						<div class="radio-inline">
+							<label>
+								<input type="radio" name="options" id="options_undirected" class="graph-type" value="undirected">
+									Undirected Graph
+							</label>
+						</div>
+					</form>
+					<form class="form-inline" role="form" action="#">
+						<button class="btn btn-primary btn-danger form-control" id="btn-attr-view">Attribute view</button>
+						<button type="button" class="btn btn-default form-control" id="btn-expand">
+							<span class="glyphicon glyphicon-zoom-in"></span> Expand
+						</button>
 					</form>
 				</div>
 				<div class="col-md-6">
