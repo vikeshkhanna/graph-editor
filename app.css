@@ -121,6 +121,7 @@ text.id {
 #attr-view-container
 {
 	overflow:auto;
+	max-height:500px;
 }
 
 #attr-view th, td

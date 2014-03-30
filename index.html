@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>GraphEd</title>
+    <title>Graft</title>
 		<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
 		<link rel="stylesheet" href="app.css">
@@ -122,13 +122,14 @@
 
 							// show the dialog
 							$("#attr-view").dialog({
-																			modal:true, 
-																			title:"Node Attributes View", 
-																			closeText:"close", 
-																			maxHeight:600,
-																			closeOnEscape:true,
-																			hide : {effect : "fade", duration:100}
-																	});
+								modal:true, 
+								title:"Node Attributes View", 
+								closeText:"close", 
+								maxHeight:600,
+								closeOnEscape:true,
+								hide : {effect : "fade", duration:100}
+							});
+
 							$(".ui-widget-overlay").click(function(){ $("#attr-view").dialog("close"); });
 						});
 
@@ -187,10 +188,10 @@
 					<label for="node-attr-attrs">Attributes:</label>
 					<textarea class="form-control" rows="3" id="node-attr-attrs"></textarea>
 				</div>
-				<div class="form-group">
-					<button class="btn btn-primary btn-sm editable-submit" id="btn-node-attr-save"><i class="glyphicon glyphicon-ok"></i></button>
+				<form class="form-group">
+					<button type="button" class="btn btn-primary btn-sm editable-submit" id="btn-node-attr-save"><i class="glyphicon glyphicon-ok"></i></button>
 					<button type="button" class="btn btn-default btn-sm editable-cancel" id="btn-node-attr-cancel"><i class="glyphicon glyphicon-remove"></i></button>
-				</div>
+				</form>
 				<div class="form-group has-error" id="node-attr-group-error" style="display:none">
 					<label class="control-label" id="node-attr-error">Node ID must be unique</label>
 				</div>
@@ -237,16 +238,16 @@
 						</div>
 					</form>
 					<form class="form-inline" role="form" action="#">
-						<button class="btn btn-primary btn-danger form-control" id="btn-attr-view">Attribute view</button>
+						<button type="button" class="btn btn-primary btn-danger form-control" id="btn-attr-view">Attribute view</button>
 						<button type="button" class="btn btn-default form-control" id="btn-expand">
-							<span class="glyphicon glyphicon-zoom-in"></span> Expand
+							<span class="glyphicon glyphicon-zoom-in"></span> Resize
 						</button>
 					</form>
 				</div>
 				<div class="col-md-6">
-						<button class="btn btn-primary" id="btn-adj-list-get">Download Adjacency List</button>
-						<button class="btn btn-primary" id="btn-edge-list-get">Download Edge List</button>
-						<button class="btn btn-warning" id="btn-node-list-get">Download Node List</button>
+						<button type="button" class="btn btn-primary" id="btn-adj-list-get">Download Adjacency List</button>
+						<button type="button" class="btn btn-primary" id="btn-edge-list-get">Download Edge List</button>
+						<button type="button" class="btn btn-warning" id="btn-node-list-get">Download Node List</button>
 				</div>
 			</div><!--Row ends-->
 			<hr style="border-top:1px solid black;" />

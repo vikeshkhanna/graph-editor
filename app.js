@@ -92,12 +92,12 @@ Editor.prototype.init = function(){
 	this.mouseup_node = null;
 
 	this.force = d3.layout.force()
-    .nodes(this.nodes)
-    .links(this.links)
-    .size([this.width, this.height])
-    .linkDistance(150)
-    .charge(-500)
-    .on('tick', this.tick.bind(this))
+	    .nodes(this.nodes)
+	    .links(this.links)
+	    .size([this.width, this.height])
+	    .linkDistance(150)
+	    .charge(-500)
+	    .on('tick', this.tick.bind(this))
 
 	this.restart();
 }
