@@ -15,18 +15,32 @@
 
 		<script type="text/javascript">
 			var editor;
+			var expanded = false;
+			var originalHeight;
 
 			$(document).ready(function(){
-					$("#download").click(function(){
-							adj_list = ""
-							for(var i=0; i<links.length; i++){
-									adj_list += links[i].source.id + " " + links[i].target.id + "\n";
-									}
+					$("#btn-adj-list-get").click(function(){
+							var adjList = editor.getAdjList();
+							var pom = document.createElement('a');
+							pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(adjList));
+							pom.setAttribute('download', "adj.txt");
+							pom.click();
+						});
 
-							 var pom = document.createElement('a');
-							 pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(adj_list));
-							 pom.setAttribute('download', "adj.txt");
-							 pom.click();
+					$("#btn-edge-list-get").click(function(){
+							var edgeList = editor.getEdgeList();
+							var pom = document.createElement('a');
+							pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(edgeList));
+							pom.setAttribute('download', "edge.txt");
+							pom.click();
+						});
+
+					$("#btn-node-list-get").click(function(){
+							var nodeList = editor.getNodeList();
+							var pom = document.createElement('a');
+							pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(nodeList));
+							pom.setAttribute('download', "node.txt");
+							pom.click();
 					 });
 
 					function dblnode(data)
@@ -75,15 +89,18 @@
 						editor = new Editor({
 							"container":"#editor-container",
 							"dblnode" : dblnode
-						});
+							});
 
+						originalHeight = $("#editor-container").height();
+
+						// undirected behaviour 
 						$(".graph-type").change(function(event){
 							editor.undirected = event.target.value === "undirected" ? true : false;
 							editor.restart();
 						});
 
+						// btn attr-view 
 						$("#btn-attr-view").click(function(){
-
 							$("#attr-view-content").empty();
 							$("#attr-view-content").append("<tr><th>Node ID</th><th>Attributes</th></tr><tr>");
 
@@ -114,6 +131,46 @@
 																	});
 							$(".ui-widget-overlay").click(function(){ $("#attr-view").dialog("close"); });
 						});
+
+						$("#btn-attr-view-save").unbind("click");
+						$("#btn-attr-view-save").click(function(){
+								var rows = $("#attr-view-content textarea");
+							
+								for(var i=0;i<rows.length;i++)
+								{
+									if(rows[i]!=""){
+										editor.nodes[i].attrs = rows[i].value.split(",");
+									}
+								}
+						
+								editor.restart();
+								$("#attr-view").dialog("close");
+							});
+
+						$("#btn-attr-view-cancel").unbind("click");
+						$("#btn-attr-view-cancel").click(function() {
+							$("#attr-view").dialog("close");
+						});
+
+						$("#btn-expand").click(function(){
+								if(!expanded){
+									$("#editor-container").animate({
+										height:750},
+										1500,
+										function(){
+											editor.restart();
+										});
+									}
+								else{
+									$("#editor-container").animate({
+										height:originalHeight},
+										1500,
+										function(){
+											editor.restart();
+										});
+									}
+									expanded=!expanded;
+							});
 					});
 		</script>
   </head>
@@ -141,11 +198,18 @@
 		</div><!--Modal ends-->
 
 		<div id="attr-view" style="display:none">
-			<table>
-				<tbody id="attr-view-content">
-						
-				</tbody>
-			</table>	
+			<div id="attr-view-container">
+				<table>
+					<tbody id="attr-view-content">
+					</tbody>
+				</table>	
+			</div>
+			<form role="form">
+				<div class="form-group">
+					<button class="btn btn-primary btn-sm editable-submit" id="btn-attr-view-save"><i class="glyphicon glyphicon-ok"></i></button>
+					<button type="button" class="btn btn-default btn-sm editable-cancel" id="btn-attr-view-cancel"><i class="glyphicon glyphicon-remove"></i></button>
+				</div>
+			</form>
 		</div>
 
 		<div class="container bs-docs-container">
@@ -157,7 +221,7 @@
 		<!--Container begins-->
 		<div class="container bs-docs-container">
 			<div class="row"> <!--Row begins-->
-				<div class="col-md-8">
+				<div class="col-md-6">
 					<form role="form">
 						<div class="radio-inline">
 								<label>
@@ -171,14 +235,31 @@
 										Undirected Graph
 								</label>
 							</div>
+						</form>
+						<form class="form-inline">
+							<button class="btn btn-primary btn-danger form-control" id="btn-attr-view">Attribute view</button>
+							<button type="button" class="btn btn-default form-control" id="btn-expand">
+								<span class="glyphicon glyphicon-zoom-in"></span> Expand
+							</button>
 					</form>
-					<button class="btn btn-primary btn-danger" id="btn-attr-view">Attribute view</button>
 				</div>
-				<div class="col-md-4">
-						<button class="btn btn-primary" id="download">Download Adjacency List</button>
-						<button class="btn btn-primary" id="download">Download Edge List</button>
+				<div class="col-md-6">
+						<button class="btn btn-primary" id="btn-adj-list-get">Download Adjacency List</button>
+						<button class="btn btn-primary" id="btn-edge-list-get">Download Edge List</button>
+						<button class="btn btn-warning" id="btn-node-list-get">Download Node List</button>
 				</div>
 			</div><!--Row ends-->
+			<hr style="border-top:1px solid black;" />
+			<p class="lead">
+					<mark>Click</mark> in the open space to <strong><mark>add a node</mark></strong>, drag from one node to another to <strong>add an edge</strong>. <br>
+					<mark>Ctrl-drag</mark> a node to <strong><mark>move</mark></strong> the graph layout. <br>
+					<mark>Click</mark> a node or an edge to <strong><mark>select</mark></strong> it.<br>
+					<mark>Double-click</mark> a node to open the <strong><mark>node editor</mark></strong>.<br>
+					<mark>Click</mark> on the Attributes View to open an editable list of <strong><mark>node attributes</mark></strong>.</p>
+
+			<p class="lead">
+					When a node is selected: <strong>R</strong> toggles reflexivity, <strong>Delete</strong> removes the node. <br>
+					When an edge is selected: <strong>L</strong>(eft), <strong>R</strong>(ight), <strong>B</strong>(oth) change direction, <strong>Delete</strong> removes the edge.</p>
 		</div><!--Container ends-->
 
 		<!--Footer-->

@@ -113,10 +113,19 @@ text.id {
 	color:white;
 }
 
+#attr-view
+{
+	overflow:hidden;
+}
+
+#attr-view-container
+{
+	overflow:auto;
+}
+
 #attr-view th, td
 {
 	padding:8px;
 	text-align:center;
 	vertical-align:middle;
 }
-

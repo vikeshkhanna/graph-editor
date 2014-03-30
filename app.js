@@ -12,13 +12,12 @@ function Editor(options){
 		}
 	}
 
-	this.width=$(this.container).width();
-	this.height=$(this.container).height();
+	this.setSize();
 
 	this.nodes = [
 			{id: "0", reflexive: false, attrs:[]},
 			{id: "1", reflexive: true , attrs:[]},
-			{id: "2", reflexive: false, attrs:[1,2]}
+			{id: "2", reflexive: false, attrs:[]}
 		],
 	this.lastNodeId = 2,
 	this.links = [
@@ -30,6 +29,15 @@ function Editor(options){
 	this.init();
 }
 
+Editor.prototype.setSize = function(){
+	this.width=$(this.container).width();
+	this.height=$(this.container).height();
+}
+
+Editor.prototype.resizeForce = function(){
+	this.setSize();
+	this.force.size([this.width, this.height]);
+}
 Editor.prototype.init = function(){
 	this.colors = d3.scale.category10();
 	this.svg = d3.select(this.container)
@@ -137,6 +145,8 @@ function getPadding(node)
 
 // update graph (called when needed)
 Editor.prototype.restart = function(){
+	this.resizeForce();
+
   // path (link) group
   this.path = this.path.data(this.links);
 
@@ -302,6 +312,59 @@ Editor.prototype.mousedown = function() {
 
 Editor.prototype.getNodeIndex = function(id){
 	return this.nodes.map(function(e){ return e.id }).indexOf(id);
+}
+
+Editor.prototype.getEdgeList = function(){
+	edgeList = "";
+
+	for(var i=0; i<this.links.length; i++){
+			edgeList += this.links[i].source.id + "\t" + this.links[i].target.id + "\n";
+	}
+
+	return edgeList;
+}
+
+Editor.prototype.getAdjList = function(){
+	adjList = "";
+
+	for(var i=0; i<this.nodes.length; i++){
+		var id = this.nodes[i].id;
+		var nodes = [];
+
+		for(var j=0;j<this.links.length; j++){
+			var link = this.links[j];
+
+			if((link.left===true || this.undirected===true) && link.target.id===id) {
+				nodes.push(link.source.id);
+			}
+			if((link.right===true || this.undirected===true) && link.source.id===id) {
+				nodes.push(link.target.id);
+			}
+		}
+
+		if(nodes.length>0){
+			adjList += id + "\t";
+
+			for(var j=0;j<nodes.length;j++)
+			{
+				adjList += nodes[j] + "\t";
+			}
+			adjList += i!=this.nodes.length-1 ? "\n" : "";
+		}
+	}
+		
+	return adjList;	
+}
+
+Editor.prototype.getNodeList  = function(){
+	nodeList = "";
+
+	for(var i=0; i<this.nodes.length; i++){
+		nodeList += this.nodes[i].id + "\t" + this.nodes[i].attrs.join(",");
+		nodeList += (i!=this.nodes.length-1 ? "\n" : "");
+	}
+
+	return nodeList;
 }
 
 Editor.prototype.mousemove = function() {
