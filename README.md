@@ -1,7 +1,7 @@
-# Graph Editor
+# Graft
 
-This in-browser graph editor is based on [rkirsling's directed graph editor](http://bl.ocks.org/rkirsling/5001347). The new features in this implementation are - 	
+Graft is an in-browser graph editor based on [rkirsling's directed graph editor](http://bl.ocks.org/rkirsling/5001347). The new features in this implementation are - 	
 
-1. Download adjacency list - Available
-2. Support for directed and undirected graphs - In progress
-3. Customise node ids - In progress
+1. Download adjacency list, edge list and node list. 
+2. Support for directed and undirected graphs.
+3. Customise node ids and add abitrary attributes to nodes. 
