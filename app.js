@@ -12,8 +12,8 @@ function Editor(options){
 		}
 	}
 
-	this.width=500;
-	this.height=400;
+	this.width=$(this.container).width();
+	this.height=$(this.container).height();
 
 	this.nodes = [
 			{id: "0", reflexive: false, attrs:[]},
@@ -101,7 +101,6 @@ Editor.prototype.resetMouseVars = function() {
 }
 
 Editor.prototype.tick = function(){
-
 		// draw directed edges with proper padding from node centers
 		this.path.attr('d', function(d) {
 			var sourcePadding = getPadding(d.source);
@@ -296,6 +295,7 @@ Editor.prototype.mousedown = function() {
       node = {id: (++this.lastNodeId).toString(), reflexive: false};
   node.x = point[0];
   node.y = point[1];
+	node.attrs = []
   this.nodes.push(node);
   this.restart();
 }

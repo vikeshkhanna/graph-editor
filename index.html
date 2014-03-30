@@ -83,10 +83,32 @@
 						});
 
 						$("#btn-attr-view").click(function(){
+
+							$("#attr-view-content").empty();
+							$("#attr-view-content").append("<tr><th>Node ID</th><th>Attributes</th></tr><tr>");
+
+							// attribute view 
+							for(var i=0;i<editor.nodes.length;i++)
+							{
+								$("#attr-view-content").append("<tr></tr>");	
+							}
+
+							var rows = d3.select("#attr-view-content").selectAll("tr")
+								.filter(function(d,i) { return i!=0; })
+								.data(editor.nodes);
+
+							rows.append("td").text(function(d){ return d.id; });
+							rows.append("td").append("textarea")
+								.attr("class", "form-control") 
+								.attr("rows","1")
+								.text(function(d){ return d.attrs.join(); }); 
+
+							// show the dialog
 							$("#attr-view").dialog({
 																			modal:true, 
 																			title:"Node Attributes View", 
 																			closeText:"close", 
+																			maxHeight:600,
 																			closeOnEscape:true,
 																			hide : {effect : "fade", duration:100}
 																	});
@@ -97,6 +119,7 @@
   </head>
   
 	<body>
+		<!--Node-attr modal-->
 		<div id="node-attr" style="display:none">
 			<form role="form" action="#">
 				<div class="form-group">
@@ -115,29 +138,56 @@
 					<label class="control-label" id="node-attr-error">Node ID must be unique</label>
 				</div>
 			</form>
+		</div><!--Modal ends-->
+
+		<div id="attr-view" style="display:none">
+			<table>
+				<tbody id="attr-view-content">
+						
+				</tbody>
+			</table>	
 		</div>
 
-		<div id="attr-view"></div>
-		<div id="editor-container"></div>
 		<div class="container bs-docs-container">
-			<div class="radio-inline">
-				<label>
-					<input type="radio" name="options" id="options_directed" class="graph-type" value="directed" checked>
-						Directed Graph
-				</label>
-			</div>
-			<div class="radio-inline">
-				<label>
-					<input type="radio" name="options" id="options_undirected" class="graph-type" value="undirected">
-						Undirected Graph
-				</label>
-			</div>
-		
-			<div style="display:block">
-				<button class="btn btn-primary" id="download">Download Adjacency List</button>
-				<button class="btn btn-primary" id="btn-attr-view">Attribute view</button>
-			</div>
+			<h1>Graph Editor</h1>
 		</div>
-	</body>
 
+		<div id="editor-container"></div>
+
+		<!--Container begins-->
+		<div class="container bs-docs-container">
+			<div class="row"> <!--Row begins-->
+				<div class="col-md-8">
+					<form role="form">
+						<div class="radio-inline">
+								<label>
+									<input type="radio" name="options" id="options_directed" class="graph-type" value="directed" checked>
+										Directed Graph
+								</label>
+							</div>
+							<div class="radio-inline">
+								<label>
+									<input type="radio" name="options" id="options_undirected" class="graph-type" value="undirected">
+										Undirected Graph
+								</label>
+							</div>
+					</form>
+					<button class="btn btn-primary btn-danger" id="btn-attr-view">Attribute view</button>
+				</div>
+				<div class="col-md-4">
+						<button class="btn btn-primary" id="download">Download Adjacency List</button>
+						<button class="btn btn-primary" id="download">Download Edge List</button>
+				</div>
+			</div><!--Row ends-->
+		</div><!--Container ends-->
+
+		<!--Footer-->
+		<div id="footer">
+			<div class="container">
+				<p class="muted credit">
+				Built by <a href="http://stanford.edu/~vikesh" target="_blank">Vikesh</a>.  Based on <a href="http://bl.ocks.org/rkirsling/5001347" target="_blank">Directed Graph Editor</a> by Mike Bostock.
+				</p>
+			</div>
+		</div><!--Footer-->
+	</body>
 </html>
