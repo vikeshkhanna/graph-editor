@@ -19,32 +19,37 @@
 			var originalHeight;
 
 			$(document).ready(function(){
+					$("#node-attr-id").keyup(function(event){
+						if(event.keyCode===13){
+							$("#btn-node-attr-save").click();
+						}
+					});
+
 					$("#btn-adj-list-get").click(function(){
-							var adjList = editor.getAdjList();
-							var pom = document.createElement('a');
-							pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(adjList));
-							pom.setAttribute('download', "adj.txt");
-							pom.click();
-						});
+						var adjList = editor.getAdjList();
+						var pom = document.createElement('a');
+						pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(adjList));
+						pom.setAttribute('download', "adj.txt");
+						pom.click();
+					});
 
 					$("#btn-edge-list-get").click(function(){
-							var edgeList = editor.getEdgeList();
-							var pom = document.createElement('a');
-							pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(edgeList));
-							pom.setAttribute('download', "edge.txt");
-							pom.click();
-						});
+						var edgeList = editor.getEdgeList();
+						var pom = document.createElement('a');
+						pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(edgeList));
+						pom.setAttribute('download', "edge.txt");
+						pom.click();
+					});
 
 					$("#btn-node-list-get").click(function(){
-							var nodeList = editor.getNodeList();
-							var pom = document.createElement('a');
-							pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(nodeList));
-							pom.setAttribute('download', "node.txt");
-							pom.click();
+						var nodeList = editor.getNodeList();
+						var pom = document.createElement('a');
+						pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(nodeList));
+						pom.setAttribute('download', "node.txt");
+						pom.click();
 					 });
 
-					function dblnode(data)
-					{
+					function dblnode(data){
 						$("#node-attr-id").attr("value", data.node.id);
 						$("#node-attr-id").attr("placeholder", data.node.id);
 						$("#node-attr-attrs").attr("value", data.node.attrs);
@@ -89,7 +94,7 @@
 						editor = new Editor({
 							"container":"#editor-container",
 							"dblnode" : dblnode
-							});
+						});
 
 						originalHeight = $("#editor-container").height();
 
@@ -174,12 +179,12 @@
 							});
 					});
 		</script>
-  </head>
+	</head>
   
 	<body>
 		<!--Node-attr modal-->
 		<div id="node-attr" style="display:none">
-			<form role="form">
+			<div role="form">
 				<div class="form-group">
 					<label for="node-attr-id">Node ID:</label>
 					<input type="text" class="form-control" id="node-attr-id" placeholder="" />
@@ -188,14 +193,14 @@
 					<label for="node-attr-attrs">Attributes:</label>
 					<textarea class="form-control" rows="3" id="node-attr-attrs"></textarea>
 				</div>
-				<form class="form-group">
+				<div class="form-group">
 					<button type="button" class="btn btn-primary btn-sm editable-submit" id="btn-node-attr-save"><i class="glyphicon glyphicon-ok"></i></button>
 					<button type="button" class="btn btn-default btn-sm editable-cancel" id="btn-node-attr-cancel"><i class="glyphicon glyphicon-remove"></i></button>
-				</form>
+				</div>
 				<div class="form-group has-error" id="node-attr-group-error" style="display:none">
 					<label class="control-label" id="node-attr-error">Node ID must be unique</label>
 				</div>
-			</form>
+			</div>
 		</div><!--Modal ends-->
 
 		<div id="attr-view" style="display:none">
@@ -207,7 +212,7 @@
 			</div>
 			<form role="form">
 				<div class="form-group">
-					<button class="btn btn-primary btn-sm editable-submit" id="btn-attr-view-save"><i class="glyphicon glyphicon-ok"></i></button>
+					<button type="button" class="btn btn-primary btn-sm editable-submit" id="btn-attr-view-save"><i class="glyphicon glyphicon-ok"></i></button>
 					<button type="button" class="btn btn-default btn-sm editable-cancel" id="btn-attr-view-cancel"><i class="glyphicon glyphicon-remove"></i></button>
 				</div>
 			</form>
@@ -267,7 +272,7 @@
 		<div id="footer">
 			<div class="container">
 				<p class="muted credit">
-				Built by <a href="http://stanford.edu/~vikesh" target="_blank">Vikesh</a>.  Based on <a href="http://bl.ocks.org/rkirsling/5001347" target="_blank">Directed Graph Editor</a> by Mike Bostock. 
+				Built by <a href="http://stanford.edu/~vikesh" target="_blank">Vikesh</a>.  Based on <a href="http://bl.ocks.org/rkirsling/5001347" target="_blank">Directed Graph Editor</a> by rkirsling. 
 				
 				<span style="float:right">Code on <a href="https://github.com/vikeshkhanna/graph-editor" target="_blank">GitHub</a></span>
 				</p>
